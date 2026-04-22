@@ -180,30 +180,18 @@
 
     <section class="card">
       <h2>Known Correct Letters</h2>
-      <p class="muted">Enter the correct letter for each position. Leave blank if unknown.</p>
-      <div class="grid-5">
-        <div class="input-group">
-          <label for="correct1">Position 1</label>
-          <input id="correct1" type="text" maxlength="1" />
-        </div>
-        <div class="input-group">
-          <label for="correct2">Position 2</label>
-          <input id="correct2" type="text" maxlength="1" />
-        </div>
-        <div class="input-group">
-          <label for="correct3">Position 3</label>
-          <input id="correct3" type="text" maxlength="1" />
-        </div>
-        <div class="input-group">
-          <label for="correct4">Position 4</label>
-          <input id="correct4" type="text" maxlength="1" />
-        </div>
-        <div class="input-group">
-          <label for="correct5">Position 5</label>
-          <input id="correct5" type="text" maxlength="1" />
-        </div>
-      </div>
-    </section>
+     <section class="card">
+  <h2>Wordle Input</h2>
+  <p class="muted">Click each box to cycle: Gray → Yellow → Green</p>
+
+  <div class="tile-row" id="tiles">
+    <div class="tile" data-state="gray"></div>
+    <div class="tile" data-state="gray"></div>
+    <div class="tile" data-state="gray"></div>
+    <div class="tile" data-state="gray"></div>
+    <div class="tile" data-state="gray"></div>
+  </div>
+</section>
 
     <section class="card">
       <h2>Misplaced Letters</h2>
