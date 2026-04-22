@@ -3,89 +3,471 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Puzzle Solver Hub</title>
-  <meta name="description" content="Fast, free tools to help solve Wordle, Octordle, and other word puzzles." />
-
+  <title>Puzzle Solver Hub - Wordle Solver</title>
+  <meta name="description" content="Fast, free Wordle solver and word puzzle helper." />
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background: #f7f7f7;
+      background: #f5f5f5;
       color: #222;
     }
 
     header {
       background: white;
-      padding: 16px 24px;
       border-bottom: 1px solid #ddd;
+      padding: 16px 24px;
       font-weight: bold;
+      font-size: 1.1rem;
     }
 
-    .container {
-      max-width: 800px;
-      margin: 60px auto;
-      padding: 24px;
+    main {
+      max-width: 960px;
+      margin: 32px auto;
+      padding: 0 16px 40px;
+    }
+
+    .hero, .card {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.08);
-      text-align: center;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.06);
+      margin-bottom: 20px;
     }
 
-    h1 {
+    h1, h2, h3 {
       margin-top: 0;
-      font-size: 2.2rem;
     }
 
-    p {
-      font-size: 1.1rem;
+    .sub {
+      color: #555;
       line-height: 1.6;
     }
 
-    .button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 20px;
-      background: #4f46e5;
-      color: white;
-      text-decoration: none;
+    .grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: #444;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border: 1px solid #ccc;
       border-radius: 8px;
+      font-size: 1rem;
+      text-transform: lowercase;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      cursor: pointer;
       font-weight: bold;
     }
 
-    .tag {
-      margin-top: 16px;
-      display: inline-block;
-      padding: 6px 12px;
+    .primary {
+      background: #4f46e5;
+      color: white;
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #222;
+    }
+
+    .muted {
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .results-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .word-chip {
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 10px 12px;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: lowercase;
+    }
+
+    .suggestions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .suggestion-chip {
       background: #eef2ff;
+      color: #1f2937;
       border-radius: 999px;
-      font-size: 0.9rem;
-      color: #333;
+      padding: 8px 14px;
+      font-weight: bold;
+    }
+
+    .footer-note {
+      color: #666;
+      font-size: 0.95rem;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 720px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-5 {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 0.95rem;
+      }
     }
   </style>
 </head>
-
 <body>
+  <header>Puzzle Solver Hub</header>
 
-  <header>
-    Puzzle Solver Hub
-  </header>
+  <main>
+    <section class="hero">
+      <h1>Wordle Solver</h1>
+      <p class="sub">
+        Enter the letters you know, the letters that are misplaced, and the letters you want to exclude.
+        This tool will show likely matches and suggest strong guesses.
+      </p>
+    </section>
 
-  <div class="container">
-    <h1>Fast, Free Puzzle Solvers</h1>
+    <section class="card">
+      <h2>Known Correct Letters</h2>
+      <p class="muted">Enter the correct letter for each position. Leave blank if unknown.</p>
+      <div class="grid-5">
+        <div class="input-group">
+          <label for="correct1">Position 1</label>
+          <input id="correct1" type="text" maxlength="1" />
+        </div>
+        <div class="input-group">
+          <label for="correct2">Position 2</label>
+          <input id="correct2" type="text" maxlength="1" />
+        </div>
+        <div class="input-group">
+          <label for="correct3">Position 3</label>
+          <input id="correct3" type="text" maxlength="1" />
+        </div>
+        <div class="input-group">
+          <label for="correct4">Position 4</label>
+          <input id="correct4" type="text" maxlength="1" />
+        </div>
+        <div class="input-group">
+          <label for="correct5">Position 5</label>
+          <input id="correct5" type="text" maxlength="1" />
+        </div>
+      </div>
+    </section>
 
-    <p>
-      Get help solving Wordle, Octordle, and other word puzzles.
-      Tools and strategy guides are coming soon.
-    </p>
+    <section class="card">
+      <h2>Misplaced Letters</h2>
+      <p class="muted">
+        Enter letters that are in the word but not in that specific position.
+        Example: if “a” was yellow in position 2, put “a” in position 2 below.
+      </p>
+      <div class="grid-5">
+        <div class="input-group">
+          <label for="misplaced1">Not in Position 1</label>
+          <input id="misplaced1" type="text" placeholder="ex: ar" />
+        </div>
+        <div class="input-group">
+          <label for="misplaced2">Not in Position 2</label>
+          <input id="misplaced2" type="text" placeholder="ex: e" />
+        </div>
+        <div class="input-group">
+          <label for="misplaced3">Not in Position 3</label>
+          <input id="misplaced3" type="text" placeholder="ex: t" />
+        </div>
+        <div class="input-group">
+          <label for="misplaced4">Not in Position 4</label>
+          <input id="misplaced4" type="text" placeholder="ex: o" />
+        </div>
+        <div class="input-group">
+          <label for="misplaced5">Not in Position 5</label>
+          <input id="misplaced5" type="text" placeholder="ex: n" />
+        </div>
+      </div>
+    </section>
 
-    <a class="button" href="#">
-      Coming Soon
-    </a>
+    <section class="card">
+      <h2>Other Letter Rules</h2>
+      <div class="two-col">
+        <div class="input-group">
+          <label for="requiredLetters">Required Letters</label>
+          <input id="requiredLetters" type="text" placeholder="Letters known to be in the word" />
+        </div>
+        <div class="input-group">
+          <label for="excludedLetters">Excluded Letters</label>
+          <input id="excludedLetters" type="text" placeholder="Letters not in the word" />
+        </div>
+      </div>
 
-    <div class="tag">
-      First tools launching soon
-    </div>
-  </div>
+      <div class="button-row">
+        <button class="primary" id="solveBtn">Find Words</button>
+        <button class="secondary" id="resetBtn">Reset</button>
+      </div>
+    </section>
 
+    <section class="card">
+      <h2>Best Guess Suggestions</h2>
+      <div id="suggestions" class="suggestions"></div>
+      <p class="footer-note">
+        Suggestions are ranked by unique letter frequency across the current possible matches.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Possible Solutions</h2>
+      <p class="muted"><span id="matchCount">0</span> matches found.</p>
+      <div id="results" class="results-list"></div>
+    </section>
+  </main>
+
+  <script>
+    const WORDS = [
+      "about","adore","after","agent","angle","angry","apple","arise","array","audio",
+      "award","baker","beach","beard","begin","below","blade","blame","blank","blend",
+      "bless","blind","block","blood","board","boost","brain","brand","brave","bread",
+      "break","brick","bring","broad","brown","build","buyer","cable","carry","catch",
+      "cause","chain","chair","charm","chase","cheap","check","chess","chief","child",
+      "claim","class","clean","clear","clerk","click","climb","clock","close","cloud",
+      "coach","coast","could","count","court","cover","craft","crane","crash","cream",
+      "crime","cross","crowd","crown","curve","daily","dance","death","debut","delay",
+      "depth","diary","digit","doubt","dozen","draft","drama","dream","dress","drink",
+      "drive","earth","elite","empty","enemy","enjoy","enter","entry","equal","error",
+      "event","every","exact","exist","extra","faith","false","fault","favor","feast",
+      "fiber","field","fifth","fight","final","first","flame","flash","fleet","floor",
+      "focus","force","forth","frame","fresh","front","fruit","giant","given","glass",
+      "globe","glory","grace","grade","grain","grand","grant","grape","graph","grasp",
+      "great","green","greet","grind","group","guard","guess","guest","guide","happy",
+      "heart","heavy","honey","horse","house","human","ideal","image","index","inner",
+      "input","issue","joint","judge","knife","known","label","large","laser","later",
+      "laugh","layer","learn","lease","least","leave","legal","light","limit","local",
+      "logic","loose","lucky","lunch","magic","major","maker","march","match","maybe",
+      "mayor","media","metal","might","minor","model","money","moral","motor","mount",
+      "mouse","mouth","movie","music","naked","nerve","never","night","noise","north",
+      "novel","nurse","occur","ocean","offer","often","order","other","paint","panel",
+      "paper","party","peace","phase","phone","piano","piece","pilot","pitch","place",
+      "plain","plane","plant","plate","point","pound","power","press","price","pride",
+      "prime","print","prior","prize","proof","proud","queen","quick","quiet","radio",
+      "raise","range","rapid","ratio","reach","react","ready","refer","right","rival",
+      "river","robot","rough","round","route","royal","rural","scale","scene","scope",
+      "score","sense","serve","shade","shake","shall","shape","share","sharp","sheet",
+      "shelf","shell","shift","shirt","shock","shoot","shore","short","shown","sight",
+      "since","skill","sleep","slide","small","smart","smile","smoke","solid","solve",
+      "sound","south","space","spare","speak","speed","spend","spice","split","spoke",
+      "sport","staff","stage","stain","stand","start","state","steam","steel","steep",
+      "stick","still","stock","stone","store","storm","story","strip","stuck","study",
+      "style","sugar","suite","sunny","super","sweet","table","taste","teach","teeth",
+      "terry","thank","their","theme","there","thick","thing","think","third","those",
+      "three","throw","tight","timer","tired","title","today","topic","total","touch",
+      "tough","tower","track","trade","train","treat","trend","trial","trust","truth",
+      "under","union","unity","upper","upset","urban","usage","usual","valid","value",
+      "video","virus","visit","vital","voice","waste","watch","water","wheel","where",
+      "which","while","white","whole","woman","world","worry","worse","worst","worth",
+      "would","write","wrong","yield","young","youth"
+    ];
+
+    function cleanSingle(value) {
+      return value.toLowerCase().replace(/[^a-z]/g, "").slice(0, 1);
+    }
+
+    function cleanMulti(value) {
+      return value.toLowerCase().replace(/[^a-z]/g, "");
+    }
+
+    function getInputs() {
+      const correct = [
+        cleanSingle(document.getElementById("correct1").value),
+        cleanSingle(document.getElementById("correct2").value),
+        cleanSingle(document.getElementById("correct3").value),
+        cleanSingle(document.getElementById("correct4").value),
+        cleanSingle(document.getElementById("correct5").value)
+      ];
+
+      const misplaced = [
+        cleanMulti(document.getElementById("misplaced1").value),
+        cleanMulti(document.getElementById("misplaced2").value),
+        cleanMulti(document.getElementById("misplaced3").value),
+        cleanMulti(document.getElementById("misplaced4").value),
+        cleanMulti(document.getElementById("misplaced5").value)
+      ];
+
+      const requiredLetters = cleanMulti(document.getElementById("requiredLetters").value);
+      const excludedLetters = cleanMulti(document.getElementById("excludedLetters").value);
+
+      return { correct, misplaced, requiredLetters, excludedLetters };
+    }
+
+    function wordMatches(word, rules) {
+      const { correct, misplaced, requiredLetters, excludedLetters } = rules;
+
+      for (let i = 0; i < 5; i++) {
+        if (correct[i] && word[i] !== correct[i]) {
+          return false;
+        }
+      }
+
+      for (let i = 0; i < 5; i++) {
+        const lettersNotHere = misplaced[i];
+        for (const letter of lettersNotHere) {
+          if (word[i] === letter) {
+            return false;
+          }
+        }
+      }
+
+      for (const letter of requiredLetters) {
+        if (!word.includes(letter)) {
+          return false;
+        }
+      }
+
+      for (let i = 0; i < 5; i++) {
+        for (const letter of misplaced[i]) {
+          if (!word.includes(letter)) {
+            return false;
+          }
+        }
+      }
+
+      for (const letter of excludedLetters) {
+        if (!requiredLetters.includes(letter) && !misplaced.join("").includes(letter) && !correct.includes(letter)) {
+          if (word.includes(letter)) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+
+    function rankSuggestions(words) {
+      const frequency = {};
+
+      for (const word of words) {
+        const uniqueLetters = [...new Set(word)];
+        for (const letter of uniqueLetters) {
+          frequency[letter] = (frequency[letter] || 0) + 1;
+        }
+      }
+
+      return [...words]
+        .map(word => {
+          const uniqueLetters = [...new Set(word)];
+          const score = uniqueLetters.reduce((sum, letter) => sum + (frequency[letter] || 0), 0);
+          return { word, score };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5)
+        .map(item => item.word);
+    }
+
+    function render(words) {
+      const results = document.getElementById("results");
+      const suggestions = document.getElementById("suggestions");
+      const matchCount = document.getElementById("matchCount");
+
+      results.innerHTML = "";
+      suggestions.innerHTML = "";
+      matchCount.textContent = words.length;
+
+      const topSuggestions = rankSuggestions(words);
+
+      if (topSuggestions.length === 0) {
+        suggestions.innerHTML = '<div class="muted">No suggestions yet.</div>';
+      } else {
+        for (const word of topSuggestions) {
+          const chip = document.createElement("div");
+          chip.className = "suggestion-chip";
+          chip.textContent = word;
+          suggestions.appendChild(chip);
+        }
+      }
+
+      if (words.length === 0) {
+        results.innerHTML = '<div class="muted">No matching words found. Try relaxing one of your filters.</div>';
+        return;
+      }
+
+      for (const word of words.slice(0, 100)) {
+        const chip = document.createElement("div");
+        chip.className = "word-chip";
+        chip.textContent = word;
+        results.appendChild(chip);
+      }
+    }
+
+    function solve() {
+      const rules = getInputs();
+      const matches = WORDS.filter(word => wordMatches(word, rules));
+      render(matches);
+    }
+
+    function resetForm() {
+      const ids = [
+        "correct1","correct2","correct3","correct4","correct5",
+        "misplaced1","misplaced2","misplaced3","misplaced4","misplaced5",
+        "requiredLetters","excludedLetters"
+      ];
+
+      ids.forEach(id => {
+        document.getElementById(id).value = "";
+      });
+
+      render([]);
+    }
+
+    document.getElementById("solveBtn").addEventListener("click", solve);
+    document.getElementById("resetBtn").addEventListener("click", resetForm);
+
+    render([]);
+  </script>
 </body>
 </html>
