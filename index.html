@@ -35,43 +35,22 @@
       margin-bottom: 20px;
     }
 
-    h1, h2, h3 {
+    h1, h2 {
       margin-top: 0;
     }
 
-    .sub {
+    .sub, .muted, .footer-note {
       color: #555;
       line-height: 1.6;
     }
 
-    .grid-5 {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      margin-top: 10px;
+    .muted {
+      font-size: 0.95rem;
     }
 
-    .input-group label {
-      display: block;
-      font-size: 0.9rem;
-      margin-bottom: 6px;
-      color: #444;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-      text-transform: lowercase;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
+    .footer-note {
+      font-size: 0.95rem;
+      margin-top: 12px;
     }
 
     .button-row {
@@ -100,9 +79,59 @@
       color: #222;
     }
 
-    .muted {
-      font-size: 0.95rem;
-      color: #666;
+    .ghost {
+      background: white;
+      color: #222;
+      border: 1px solid #d1d5db;
+    }
+
+    .rows {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tile-row {
+      display: grid;
+      grid-template-columns: repeat(5, 64px);
+      gap: 10px;
+      justify-content: start;
+    }
+
+    .tile {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 1.8rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      cursor: pointer;
+      user-select: none;
+      background: #e5e7eb;
+      color: #111827;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .tile.gray {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .tile.yellow {
+      background: #facc15;
+      color: #111827;
+      border-color: #eab308;
+    }
+
+    .tile.green {
+      background: #22c55e;
+      color: white;
+      border-color: #16a34a;
     }
 
     .results-list {
@@ -137,69 +166,15 @@
       font-weight: bold;
     }
 
-    .footer-note {
-      color: #666;
-      font-size: 0.95rem;
-      margin-top: 12px;
-      line-height: 1.5;
-    }
-
-    .tile-row {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .tile {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 8px;
-      border: 2px solid #ccc;
-      font-size: 1.8rem;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-transform: uppercase;
-      cursor: pointer;
-      user-select: none;
-      background: #e5e7eb;
-      outline: none;
-    }
-
-    .tile.gray {
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .tile.yellow {
-      background: #facc15;
-      color: #111827;
-      border-color: #eab308;
-    }
-
-    .tile.green {
-      background: #22c55e;
-      color: white;
-      border-color: #16a34a;
-    }
-
     @media (max-width: 720px) {
-      .two-col {
-        grid-template-columns: 1fr;
-      }
-
-      .grid-5 {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-      }
-
-      input[type="text"] {
-        padding: 10px;
-        font-size: 0.95rem;
+      .tile-row {
+        grid-template-columns: repeat(5, 52px);
+        gap: 8px;
       }
 
       .tile {
+        width: 52px;
+        height: 52px;
         font-size: 1.4rem;
       }
     }
@@ -212,68 +187,21 @@
     <section class="hero">
       <h1>Wordle Solver</h1>
       <p class="sub">
-        Enter the letters you know, the letters that are misplaced, and the letters you want to exclude.
-        This tool will show likely matches and suggest strong guesses.
+        Type each guess into a row. Click a tile to cycle its color:
+        Gray → Yellow → Green. Then click <strong>Find Words</strong>.
       </p>
     </section>
 
     <section class="card">
-      <h2>Wordle Input</h2>
-      <p class="muted">Type a letter into a tile, then click it to cycle: Gray → Yellow → Green.</p>
-
-      <div class="tile-row" id="tiles">
-        <div class="tile gray" data-state="gray" tabindex="0"></div>
-        <div class="tile gray" data-state="gray" tabindex="0"></div>
-        <div class="tile gray" data-state="gray" tabindex="0"></div>
-        <div class="tile gray" data-state="gray" tabindex="0"></div>
-        <div class="tile gray" data-state="gray" tabindex="0"></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Misplaced Letters</h2>
+      <h2>Wordle Board</h2>
       <p class="muted">
-        Enter letters that are in the word but not in that specific position.
-        Example: if “a” was yellow in position 2, put “a” in position 2 below.
+        Type letters directly into the tiles. Use multiple rows for multiple guesses.
       </p>
-      <div class="grid-5">
-        <div class="input-group">
-          <label for="misplaced1">Not in Position 1</label>
-          <input id="misplaced1" type="text" placeholder="ex: ar" />
-        </div>
-        <div class="input-group">
-          <label for="misplaced2">Not in Position 2</label>
-          <input id="misplaced2" type="text" placeholder="ex: e" />
-        </div>
-        <div class="input-group">
-          <label for="misplaced3">Not in Position 3</label>
-          <input id="misplaced3" type="text" placeholder="ex: t" />
-        </div>
-        <div class="input-group">
-          <label for="misplaced4">Not in Position 4</label>
-          <input id="misplaced4" type="text" placeholder="ex: o" />
-        </div>
-        <div class="input-group">
-          <label for="misplaced5">Not in Position 5</label>
-          <input id="misplaced5" type="text" placeholder="ex: n" />
-        </div>
-      </div>
-    </section>
 
-    <section class="card">
-      <h2>Other Letter Rules</h2>
-      <div class="two-col">
-        <div class="input-group">
-          <label for="requiredLetters">Required Letters</label>
-          <input id="requiredLetters" type="text" placeholder="Letters known to be in the word" />
-        </div>
-        <div class="input-group">
-          <label for="excludedLetters">Excluded Letters</label>
-          <input id="excludedLetters" type="text" placeholder="Letters not in the word" />
-        </div>
-      </div>
+      <div id="rows" class="rows"></div>
 
       <div class="button-row">
+        <button class="ghost" id="addRowBtn">Add Guess Row</button>
         <button class="primary" id="solveBtn">Find Words</button>
         <button class="secondary" id="resetBtn">Reset</button>
       </div>
@@ -377,67 +305,116 @@
       "sappy","spoon","faint","maxim","linen","unmet","flesh","booby","forth","first"
     ];
 
-    const tiles = document.querySelectorAll(".tile");
+    const rowsContainer = document.getElementById("rows");
 
-    tiles.forEach(tile => {
+    function createTile() {
+      const tile = document.createElement("div");
+      tile.className = "tile gray";
+      tile.setAttribute("data-state", "gray");
+      tile.setAttribute("tabindex", "0");
+      tile.textContent = "";
+
       tile.addEventListener("click", () => {
-        const states = ["gray", "yellow", "green"];
-        const current = tile.getAttribute("data-state");
-        const next = states[(states.indexOf(current) + 1) % 3];
-
-        tile.setAttribute("data-state", next);
-        tile.classList.remove("gray", "yellow", "green");
-        tile.classList.add(next);
+        cycleTileState(tile);
       });
 
       tile.addEventListener("keydown", e => {
-        if (/^[a-zA-Z]$/.test(e.key)) {
-          tile.textContent = e.key.toUpperCase();
-        } else if (e.key === "Backspace" || e.key === "Delete") {
-          tile.textContent = "";
-        } else if (e.key === "ArrowRight" && tile.nextElementSibling) {
-          tile.nextElementSibling.focus();
-        } else if (e.key === "ArrowLeft" && tile.previousElementSibling) {
-          tile.previousElementSibling.focus();
-        } else if (e.key === " " || e.key === "Enter") {
-          e.preventDefault();
-          tile.click();
-        }
+        handleTileKeydown(e, tile);
       });
-    });
 
-    function cleanMulti(value) {
-      return value.toLowerCase().replace(/[^a-z]/g, "");
+      return tile;
     }
 
-    function getInputs() {
-      const correct = ["", "", "", "", ""];
-      const misplaced = [
-        cleanMulti(document.getElementById("misplaced1").value),
-        cleanMulti(document.getElementById("misplaced2").value),
-        cleanMulti(document.getElementById("misplaced3").value),
-        cleanMulti(document.getElementById("misplaced4").value),
-        cleanMulti(document.getElementById("misplaced5").value)
-      ];
+    function createRow() {
+      const row = document.createElement("div");
+      row.className = "tile-row";
 
-      let requiredLetters = cleanMulti(document.getElementById("requiredLetters").value);
-      let excludedLetters = cleanMulti(document.getElementById("excludedLetters").value);
+      for (let i = 0; i < 5; i++) {
+        row.appendChild(createTile());
+      }
 
-      tiles.forEach((tile, i) => {
-        const letter = tile.textContent.toLowerCase().replace(/[^a-z]/g, "");
-        const state = tile.getAttribute("data-state");
+      rowsContainer.appendChild(row);
+    }
 
-        if (!letter) return;
+    function cycleTileState(tile) {
+      const states = ["gray", "yellow", "green"];
+      const current = tile.getAttribute("data-state");
+      const next = states[(states.indexOf(current) + 1) % 3];
 
-        if (state === "green") {
-          correct[i] = letter;
-          requiredLetters += letter;
-        } else if (state === "yellow") {
-          misplaced[i] += letter;
-          requiredLetters += letter;
-        } else if (state === "gray") {
-          excludedLetters += letter;
+      tile.setAttribute("data-state", next);
+      tile.classList.remove("gray", "yellow", "green");
+      tile.classList.add(next);
+    }
+
+    function handleTileKeydown(e, tile) {
+      const row = tile.parentElement;
+      const tiles = [...row.querySelectorAll(".tile")];
+      const index = tiles.indexOf(tile);
+
+      if (/^[a-zA-Z]$/.test(e.key)) {
+        tile.textContent = e.key.toUpperCase();
+        if (index < 4) tiles[index + 1].focus();
+        return;
+      }
+
+      if (e.key === "Backspace") {
+        if (tile.textContent) {
+          tile.textContent = "";
+        } else if (index > 0) {
+          tiles[index - 1].focus();
+          tiles[index - 1].textContent = "";
         }
+        return;
+      }
+
+      if (e.key === "Delete") {
+        tile.textContent = "";
+        return;
+      }
+
+      if (e.key === "ArrowRight" && index < 4) {
+        tiles[index + 1].focus();
+        return;
+      }
+
+      if (e.key === "ArrowLeft" && index > 0) {
+        tiles[index - 1].focus();
+        return;
+      }
+
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        cycleTileState(tile);
+      }
+    }
+
+    function getInputsFromRows() {
+      const correct = ["", "", "", "", ""];
+      const misplaced = ["", "", "", "", ""];
+      let requiredLetters = "";
+      let excludedLetters = "";
+
+      const rows = [...document.querySelectorAll(".tile-row")];
+
+      rows.forEach(row => {
+        const tiles = [...row.querySelectorAll(".tile")];
+
+        tiles.forEach((tile, i) => {
+          const letter = tile.textContent.toLowerCase().replace(/[^a-z]/g, "");
+          const state = tile.getAttribute("data-state");
+
+          if (!letter) return;
+
+          if (state === "green") {
+            correct[i] = letter;
+            requiredLetters += letter;
+          } else if (state === "yellow") {
+            misplaced[i] += letter;
+            requiredLetters += letter;
+          } else if (state === "gray") {
+            excludedLetters += letter;
+          }
+        });
       });
 
       return { correct, misplaced, requiredLetters, excludedLetters };
@@ -534,7 +511,7 @@
       }
 
       if (words.length === 0) {
-        results.innerHTML = '<div class="muted">No matching words found. Try relaxing one of your filters.</div>';
+        results.innerHTML = '<div class="muted">No matching words found. Try relaxing one of your guesses.</div>';
         return;
       }
 
@@ -547,34 +524,24 @@
     }
 
     function solve() {
-      const rules = getInputs();
+      const rules = getInputsFromRows();
       const matches = WORDS.filter(word => wordMatches(word, rules));
       render(matches);
     }
 
-    function resetForm() {
-      const ids = [
-        "misplaced1","misplaced2","misplaced3","misplaced4","misplaced5",
-        "requiredLetters","excludedLetters"
-      ];
-
-      ids.forEach(id => {
-        document.getElementById(id).value = "";
-      });
-
-      tiles.forEach(tile => {
-        tile.textContent = "";
-        tile.setAttribute("data-state", "gray");
-        tile.classList.remove("yellow", "green");
-        tile.classList.add("gray");
-      });
-
+    function resetBoard() {
+      rowsContainer.innerHTML = "";
+      createRow();
+      createRow();
       render([]);
     }
 
+    document.getElementById("addRowBtn").addEventListener("click", createRow);
     document.getElementById("solveBtn").addEventListener("click", solve);
-    document.getElementById("resetBtn").addEventListener("click", resetForm);
+    document.getElementById("resetBtn").addEventListener("click", resetBoard);
 
+    createRow();
+    createRow();
     render([]);
   </script>
 </body>
