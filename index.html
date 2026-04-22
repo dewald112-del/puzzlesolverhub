@@ -163,6 +163,40 @@
         padding: 10px;
         font-size: 0.95rem;
       }
+      .tile-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tile {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tile.gray {
+  background: #e5e7eb;
+}
+
+.tile.yellow {
+  background: #facc15;
+}
+
+.tile.green {
+  background: #22c55e;
+  color: white;
+}
     }
   </style>
 </head>
