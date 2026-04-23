@@ -34,49 +34,73 @@
     }
 
     main {
-      max-width: 960px;
-      margin: 32px auto;
-      padding: 0 16px 40px;
+      max-width: 1180px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
     }
 
-    .hero, .card {
+    .hero {
       background: white;
       border-radius: 12px;
-      padding: 24px;
+      padding: 20px 24px;
       box-shadow: 0 8px 24px rgba(0,0,0,.06);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    h1, h2 {
+    h1, h2, h3 {
       margin-top: 0;
     }
 
     .sub, .muted, .footer-note {
       color: #555;
-      line-height: 1.6;
+      line-height: 1.55;
     }
 
     .muted {
       font-size: 0.95rem;
     }
 
-    .footer-note {
-      font-size: 0.95rem;
-      margin-top: 12px;
+    .layout {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.06);
+    }
+
+    .left-panel {
+      position: sticky;
+      top: 16px;
+    }
+
+    .right-panel {
+      position: sticky;
+      top: 16px;
+      max-height: calc(100vh - 40px);
+      display: grid;
+      grid-template-rows: auto auto auto 1fr;
+      gap: 14px;
+      overflow: hidden;
     }
 
     .button-row {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
-      margin-top: 18px;
+      margin-top: 16px;
     }
 
     button {
       border: none;
       border-radius: 8px;
-      padding: 12px 18px;
-      font-size: 1rem;
+      padding: 11px 15px;
+      font-size: 0.95rem;
       cursor: pointer;
       font-weight: bold;
     }
@@ -99,23 +123,23 @@
 
     .rows {
       display: grid;
-      gap: 12px;
-      margin-top: 16px;
+      gap: 10px;
+      margin-top: 14px;
     }
 
     .tile-row {
       display: grid;
-      grid-template-columns: repeat(5, 64px);
-      gap: 10px;
+      grid-template-columns: repeat(5, 56px);
+      gap: 8px;
       justify-content: start;
     }
 
     .tile {
-      width: 64px;
-      height: 64px;
+      width: 56px;
+      height: 56px;
       border-radius: 8px;
       border: 2px solid #ccc;
-      font-size: 1.8rem;
+      font-size: 1.65rem;
       font-weight: bold;
       display: flex;
       align-items: center;
@@ -146,28 +170,10 @@
       border-color: #16a34a;
     }
 
-    .results-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .word-chip {
-      background: #f3f4f6;
-      border-radius: 8px;
-      padding: 10px 12px;
-      text-align: center;
-      font-weight: bold;
-      letter-spacing: 1px;
-      text-transform: lowercase;
-    }
-
     .suggestions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 12px;
     }
 
     .suggestion-chip {
@@ -178,20 +184,100 @@
       font-weight: bold;
     }
 
-    @media (max-width: 720px) {
+    .excluded-box {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-height: 34px;
+    }
+
+    .letter-chip {
+      background: #e5e7eb;
+      color: #111827;
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .insights {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+    }
+
+    .insight {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .insight strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .results-wrap {
+      overflow: auto;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 12px;
+    }
+
+    .results-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+      gap: 8px;
+      padding-bottom: 8px;
+    }
+
+    .word-chip {
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 9px 10px;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: lowercase;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .left-panel,
+      .right-panel {
+        position: static;
+        max-height: none;
+      }
+
+      .right-panel {
+        overflow: visible;
+      }
+
+      .results-wrap {
+        max-height: 380px;
+      }
+    }
+
+    @media (max-width: 460px) {
       .tile-row {
-        grid-template-columns: repeat(5, 52px);
-        gap: 8px;
+        grid-template-columns: repeat(5, 48px);
+        gap: 7px;
       }
 
       .tile {
-        width: 52px;
-        height: 52px;
-        font-size: 1.4rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1.35rem;
       }
     }
   </style>
 </head>
+
 <body>
   <header>
     <div>Puzzle Solver Hub</div>
@@ -202,39 +288,48 @@
     <section class="hero">
       <h1>Wordle Solver</h1>
       <p class="sub">
-        Type each guess into a row. Click a tile to cycle its color:
-        Gray → Yellow → Green. Then click <strong>Find Words</strong>.
+        Type each guess into a row. Click tiles to mark gray, yellow, or green.
+        Suggestions update automatically as you work.
       </p>
     </section>
 
-    <section class="card">
-      <h2>Wordle Board</h2>
-      <p class="muted">
-        Type letters directly into the tiles. Use multiple rows for multiple guesses.
-      </p>
+    <div class="layout">
+      <section class="card left-panel">
+        <h2>Wordle Board</h2>
+        <p class="muted">Type letters directly into the tiles. Click each tile to cycle Gray → Yellow → Green.</p>
 
-      <div id="rows" class="rows"></div>
+        <div id="rows" class="rows"></div>
 
-      <div class="button-row">
-        <button class="ghost" id="addRowBtn">Add Guess Row</button>
-        <button class="primary" id="solveBtn">Find Words</button>
-        <button class="secondary" id="resetBtn">Reset</button>
-      </div>
-    </section>
+        <div class="button-row">
+          <button class="ghost" id="addRowBtn">Add Guess Row</button>
+          <button class="primary" id="solveBtn">Update Now</button>
+          <button class="secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
 
-    <section class="card">
-      <h2>Best Guess Suggestions</h2>
-      <div id="suggestions" class="suggestions"></div>
-      <p class="footer-note">
-        Suggestions are ranked by unique letter frequency across the current possible matches.
-      </p>
-    </section>
+      <section class="card right-panel">
+        <div>
+          <h2>Best Next Guesses</h2>
+          <div id="suggestions" class="suggestions"></div>
+        </div>
 
-    <section class="card">
-      <h2>Possible Solutions</h2>
-      <p class="muted"><span id="matchCount">0</span> matches found.</p>
-      <div id="results" class="results-list"></div>
-    </section>
+        <div>
+          <h3>Gray Letters</h3>
+          <div id="excludedLettersBox" class="excluded-box"></div>
+        </div>
+
+        <div>
+          <h3>Quick Insights</h3>
+          <div id="insights" class="insights"></div>
+        </div>
+
+        <div class="results-wrap">
+          <h3>Possible Solutions</h3>
+          <p class="muted"><span id="matchCount">0</span> matches found.</p>
+          <div id="results" class="results-list"></div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <script>
@@ -317,20 +412,21 @@
       "stage","decay","nerve","flier","shaft","crook","clean","china","ridge","vowel",
       "gnome","snuck","icing","spiny","rigor","snail","flown","rabid","prose","thank",
       "poppy","budge","fiber","moldy","dowdy","kneel","track","caddy","quell","dumpy",
-      "sappy","spoon","faint","maxim","linen","unmet","flesh","booby","forth","first"
+      "sappy","spoon","faint"
     ];
 
     const rowsContainer = document.getElementById("rows");
+    let solveTimer;
 
     function createTile() {
       const tile = document.createElement("div");
       tile.className = "tile gray";
       tile.setAttribute("data-state", "gray");
       tile.setAttribute("tabindex", "0");
-      tile.textContent = "";
 
       tile.addEventListener("click", () => {
         cycleTileState(tile);
+        scheduleSolve();
       });
 
       tile.addEventListener("keydown", e => {
@@ -344,11 +440,10 @@
       const row = document.createElement("div");
       row.className = "tile-row";
 
-      for (let i = 0; i < 5; i++) {
-        row.appendChild(createTile());
-      }
+      for (let i = 0; i < 5; i++) row.appendChild(createTile());
 
       rowsContainer.appendChild(row);
+      scheduleSolve();
     }
 
     function cycleTileState(tile) {
@@ -369,6 +464,7 @@
       if (/^[a-zA-Z]$/.test(e.key)) {
         tile.textContent = e.key.toUpperCase();
         if (index < 4) tiles[index + 1].focus();
+        scheduleSolve();
         return;
       }
 
@@ -379,11 +475,13 @@
           tiles[index - 1].focus();
           tiles[index - 1].textContent = "";
         }
+        scheduleSolve();
         return;
       }
 
       if (e.key === "Delete") {
         tile.textContent = "";
+        scheduleSolve();
         return;
       }
 
@@ -400,6 +498,7 @@
       if (e.key === " " || e.key === "Enter") {
         e.preventDefault();
         cycleTileState(tile);
+        scheduleSolve();
       }
     }
 
@@ -426,7 +525,7 @@
           } else if (state === "yellow") {
             misplaced[i] += letter;
             requiredLetters += letter;
-          } else if (state === "gray") {
+          } else {
             excludedLetters += letter;
           }
         });
@@ -439,31 +538,22 @@
       const { correct, misplaced, requiredLetters, excludedLetters } = rules;
 
       for (let i = 0; i < 5; i++) {
-        if (correct[i] && word[i] !== correct[i]) {
-          return false;
-        }
-      }
-
-      for (let i = 0; i < 5; i++) {
-        const lettersNotHere = misplaced[i];
-        for (const letter of lettersNotHere) {
-          if (word[i] === letter) {
-            return false;
-          }
-        }
-      }
-
-      for (const letter of requiredLetters) {
-        if (!word.includes(letter)) {
-          return false;
-        }
+        if (correct[i] && word[i] !== correct[i]) return false;
       }
 
       for (let i = 0; i < 5; i++) {
         for (const letter of misplaced[i]) {
-          if (!word.includes(letter)) {
-            return false;
-          }
+          if (word[i] === letter) return false;
+        }
+      }
+
+      for (const letter of requiredLetters) {
+        if (!word.includes(letter)) return false;
+      }
+
+      for (let i = 0; i < 5; i++) {
+        for (const letter of misplaced[i]) {
+          if (!word.includes(letter)) return false;
         }
       }
 
@@ -473,9 +563,7 @@
           !misplaced.join("").includes(letter) &&
           !correct.includes(letter)
         ) {
-          if (word.includes(letter)) {
-            return false;
-          }
+          if (word.includes(letter)) return false;
         }
       }
 
@@ -503,7 +591,68 @@
         .map(item => item.word);
     }
 
-    function render(words) {
+    function getTopLetters(words) {
+      const counts = {};
+      for (const word of words) {
+        for (const letter of new Set(word)) {
+          counts[letter] = (counts[letter] || 0) + 1;
+        }
+      }
+
+      return Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([letter]) => letter.toUpperCase());
+    }
+
+    function renderExcludedLetters(rules) {
+      const box = document.getElementById("excludedLettersBox");
+      box.innerHTML = "";
+
+      const confirmedExcluded = [...new Set(
+        rules.excludedLetters
+          .split("")
+          .filter(letter =>
+            !rules.requiredLetters.includes(letter) &&
+            !rules.misplaced.join("").includes(letter) &&
+            !rules.correct.includes(letter)
+          )
+      )].sort();
+
+      if (confirmedExcluded.length === 0) {
+        box.innerHTML = '<span class="muted">No gray letters yet.</span>';
+        return;
+      }
+
+      confirmedExcluded.forEach(letter => {
+        const chip = document.createElement("span");
+        chip.className = "letter-chip";
+        chip.textContent = letter;
+        box.appendChild(chip);
+      });
+    }
+
+    function renderInsights(words) {
+      const insights = document.getElementById("insights");
+      const topLetters = getTopLetters(words);
+
+      insights.innerHTML = `
+        <div class="insight">
+          <strong>Top letters</strong>
+          <span class="muted">${topLetters.length ? topLetters.join(", ") : "None yet"}</span>
+        </div>
+        <div class="insight">
+          <strong>Best mode</strong>
+          <span class="muted">${words.length > 20 ? "Narrow it down" : "Look for solution"}</span>
+        </div>
+        <div class="insight">
+          <strong>Result set</strong>
+          <span class="muted">${words.length <= 10 ? "Very tight" : words.length <= 30 ? "Manageable" : "Still broad"}</span>
+        </div>
+      `;
+    }
+
+    function render(words, rules) {
       const results = document.getElementById("results");
       const suggestions = document.getElementById("suggestions");
       const matchCount = document.getElementById("matchCount");
@@ -511,6 +660,9 @@
       results.innerHTML = "";
       suggestions.innerHTML = "";
       matchCount.textContent = words.length;
+
+      renderExcludedLetters(rules);
+      renderInsights(words);
 
       const topSuggestions = rankSuggestions(words);
 
@@ -530,7 +682,7 @@
         return;
       }
 
-      for (const word of words.slice(0, 100)) {
+      for (const word of words.slice(0, 120)) {
         const chip = document.createElement("div");
         chip.className = "word-chip";
         chip.textContent = word;
@@ -541,14 +693,19 @@
     function solve() {
       const rules = getInputsFromRows();
       const matches = WORDS.filter(word => wordMatches(word, rules));
-      render(matches);
+      render(matches, rules);
+    }
+
+    function scheduleSolve() {
+      clearTimeout(solveTimer);
+      solveTimer = setTimeout(solve, 180);
     }
 
     function resetBoard() {
       rowsContainer.innerHTML = "";
       createRow();
       createRow();
-      render([]);
+      solve();
     }
 
     document.getElementById("addRowBtn").addEventListener("click", createRow);
@@ -557,7 +714,7 @@
 
     createRow();
     createRow();
-    render([]);
+    solve();
   </script>
 </body>
 </html>
