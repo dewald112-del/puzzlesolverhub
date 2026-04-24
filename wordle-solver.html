@@ -6,44 +6,142 @@
 <title>Puzzle Solver Hub - Wordle Solver</title>
 
 <style>
-body { font-family: Arial; margin:0; background:#f5f5f5; }
-header { background:white; padding:14px; border-bottom:1px solid #ddd; display:flex; justify-content:space-between; }
-
-main { padding:12px; max-width:1000px; margin:auto; }
-
-.card { background:white; padding:14px; border-radius:12px; margin-bottom:12px; }
-
-.position-row { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
-
-input { padding:10px; border-radius:8px; border:2px solid #ccc; text-align:center; font-weight:bold; }
-input.green { border-color:#22c55e; background:#ecfdf5; }
-input.yellow { border-color:#facc15; background:#fefce8; }
-input.gray { border-color:#9ca3af; background:#f3f4f6; text-align:left; }
-
-button { margin-top:10px; padding:10px; width:100%; border:none; border-radius:8px; background:#4f46e5; color:white; }
-
-.strategy { background:#f9fafb; border:1px solid #ddd; padding:10px; border-radius:10px; margin-bottom:10px; }
-
-.suggestions { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-.suggestion-chip { padding:10px; border-radius:10px; background:#eef2ff; font-weight:bold; text-align:center; cursor:pointer; position:relative; }
-.suggestion-chip.best { background:#dcfce7; }
-
-.suggestion-label { font-size:11px; display:block; opacity:.7; }
-
-.copy-feedback {
-  position:absolute;
-  bottom:-18px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:10px;
-  color:green;
-  opacity:0;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f5f5f5;
 }
-.suggestion-chip.copied .copy-feedback { opacity:1; }
 
-.results { display:grid; grid-template-columns:repeat(auto-fill,minmax(70px,1fr)); gap:6px; margin-top:10px; }
-.word { background:#eee; padding:8px; text-align:center; border-radius:8px; }
+header {
+  background: white;
+  padding: 14px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+}
 
+main {
+  max-width: 520px;
+  margin: auto;
+  padding: 12px;
+}
+
+.card {
+  background: white;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+h2 { margin: 0 0 10px; font-size: 1.2rem; }
+h3 { margin: 12px 0 6px; font-size: 1rem; }
+
+.position-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  text-align: center;
+  font-weight: bold;
+}
+
+input.green { border-color: #22c55e; background: #ecfdf5; }
+input.yellow { border-color: #facc15; background: #fefce8; }
+input.gray { border-color: #9ca3af; background: #f3f4f6; text-align: left; }
+
+button {
+  margin-top: 10px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: white;
+}
+
+.strategy {
+  background: #f9fafb;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+/* Suggestions */
+.suggestions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.suggestion-chip {
+  background: #eef2ff;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+}
+
+.suggestion-chip.best {
+  background: #dcfce7;
+}
+
+.suggestion-label {
+  font-size: 10px;
+  opacity: 0.7;
+  display: block;
+}
+
+/* Copy feedback */
+.copy-feedback {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: green;
+  opacity: 0;
+}
+
+.suggestion-chip.copied .copy-feedback {
+  opacity: 1;
+}
+
+/* Results */
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.word {
+  background: #eee;
+  padding: 8px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+/* Desktop upgrade */
+@media (min-width: 800px) {
+  main { max-width: 1000px; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 16px;
+  }
+}
 </style>
 </head>
 
@@ -55,6 +153,8 @@ button { margin-top:10px; padding:10px; width:100%; border:none; border-radius:8
 </header>
 
 <main>
+
+<div class="layout">
 
 <div class="card">
 <h2>Wordle Helper</h2>
@@ -70,7 +170,7 @@ button { margin-top:10px; padding:10px; width:100%; border:none; border-radius:8
 </div>
 
 <h3>Gray</h3>
-<input id="gray" class="gray">
+<input id="gray" class="gray" placeholder="rstlne">
 
 <button onclick="solve()">Update</button>
 </div>
@@ -78,17 +178,20 @@ button { margin-top:10px; padding:10px; width:100%; border:none; border-radius:8
 <div class="card">
 <h2>Best Guesses</h2>
 <div id="strategy" class="strategy"></div>
+
 <div id="suggestions" class="suggestions"></div>
 
 <h3>Results (<span id="count">0</span>)</h3>
 <div id="results" class="results"></div>
 </div>
 
+</div>
+
 </main>
 
 <script>
 
-const WORDS = ["cigar","rebut","sissy","humph","awake","blush","focal","evade","naval","serve","heath","dwarf","model","karma","stink","grade","quiet","bench","abate","feign","major","death","fresh","crust","stool","colon","abase","marry","react","batty","pride","floss","helix","croak","staff","paper","unfed","whelp","trawl","outdo","adobe","crazy","sower","repay","digit","crate","cluck","spike","mimic","pound","maxim","linen","unmet","flesh","booby","forth","first","stand","belly","ivory","seedy","print","yearn","drain","bribe","stout","panel","crass","flume","offal"];
+const WORDS = ["cigar","rebut","sissy","humph","awake","blush","focal","evade","naval","serve","heath","dwarf","model","karma","stink","grade","quiet","bench","abate","feign","major","death","fresh","crust","stool","colon","abase","marry","react","batty"];
 
 function clean(v){ return v.toLowerCase().replace(/[^a-z]/g,""); }
 
@@ -130,8 +233,8 @@ return {w,score};
 }
 
 function strategy(n){
-if(n>40) return "Explore new letters";
-if(n>15) return "Narrow down";
+if(n>20) return "Explore new letters";
+if(n>10) return "Narrow down";
 if(n>5) return "Close in";
 return "Very close";
 }
@@ -140,12 +243,12 @@ function copyWord(word, el){
 navigator.clipboard.writeText(word);
 el.classList.add("copied");
 
-let feedback=document.createElement("div");
-feedback.className="copy-feedback";
-feedback.innerText="Copied";
-el.appendChild(feedback);
+let fb=document.createElement("div");
+fb.className="copy-feedback";
+fb.innerText="Copied";
+el.appendChild(fb);
 
-setTimeout(()=>{ el.classList.remove("copied"); feedback.remove(); },800);
+setTimeout(()=>{ el.classList.remove("copied"); fb.remove(); },800);
 }
 
 function solve(){
@@ -160,13 +263,13 @@ document.getElementById("strategy").innerText=strategy(matches.length);
 let s=document.getElementById("suggestions");
 s.innerHTML="";
 
-ranked.slice(0,5).forEach((obj,i)=>{
+ranked.slice(0,4).forEach((obj,i)=>{
 let d=document.createElement("div");
 d.className="suggestion-chip"+(i==0?" best":"");
 
 let label=document.createElement("span");
 label.className="suggestion-label";
-label.innerText=i==0?"Best":matches.length<10?"Likely":"Strong";
+label.innerText=i==0?"Best":"Guess";
 
 d.appendChild(label);
 d.append(obj.w);
@@ -178,7 +281,7 @@ s.appendChild(d);
 
 let res=document.getElementById("results");
 res.innerHTML="";
-matches.slice(0,100).forEach(w=>{
+matches.slice(0,60).forEach(w=>{
 let d=document.createElement("div");
 d.className="word";
 d.innerText=w;
