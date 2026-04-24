@@ -6,274 +6,55 @@
   <title>Puzzle Solver Hub - Wordle Solver</title>
   <meta name="description" content="Fast, free Wordle solver and word puzzle helper." />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f5f5f5;
-      color: #222;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; color: #222; }
+    header { background: white; border-bottom: 1px solid #ddd; padding: 16px 24px; font-weight: bold; font-size: 1.1rem; display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap; }
+    header a { color: #4f46e5; text-decoration: none; font-weight: bold; font-size: 0.95rem; }
+    main { max-width: 1180px; margin: 24px auto; padding: 0 16px 32px; }
+    .hero, .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 8px 24px rgba(0,0,0,.06); margin-bottom: 16px; }
+    h1, h2, h3 { margin-top: 0; }
+    .sub, .muted { color: #555; line-height: 1.55; }
+    .muted { font-size: 0.95rem; }
+    .layout { display: grid; grid-template-columns: 440px 1fr; gap: 16px; align-items: start; }
+    .left-panel, .right-panel { position: sticky; top: 16px; }
+    .right-panel { max-height: calc(100vh - 40px); display: grid; grid-template-rows: auto auto auto 1fr; gap: 14px; overflow: hidden; }
 
-    header {
-      background: white;
-      border-bottom: 1px solid #ddd;
-      padding: 16px 24px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+    .helper-section { margin-top: 18px; }
+    .helper-label { font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .label-dot { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
+    .green-dot { background: #22c55e; }
+    .yellow-dot { background: #facc15; }
+    .gray-dot { background: #9ca3af; }
 
-    header a {
-      color: #4f46e5;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 0.95rem;
-    }
+    .position-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .position-box { display: grid; gap: 5px; }
+    .position-box label { font-size: 0.75rem; color: #666; text-align: center; }
+    input { box-sizing: border-box; border-radius: 8px; border: 2px solid #d1d5db; padding: 12px; font-size: 1.1rem; font-weight: bold; text-align: center; text-transform: lowercase; width: 100%; }
+    input.green { border-color: #22c55e; background: #ecfdf5; }
+    input.yellow { border-color: #facc15; background: #fefce8; }
+    input.gray { border-color: #9ca3af; background: #f3f4f6; text-align: left; font-weight: normal; }
 
-    main {
-      max-width: 1180px;
-      margin: 24px auto;
-      padding: 0 16px 32px;
-    }
+    .button-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    button { border: none; border-radius: 8px; padding: 11px 15px; font-size: 0.95rem; cursor: pointer; font-weight: bold; }
+    .primary { background: #4f46e5; color: white; }
+    .secondary { background: #e5e7eb; color: #222; }
 
-    .hero {
-      background: white;
-      border-radius: 12px;
-      padding: 20px 24px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.06);
-      margin-bottom: 16px;
-    }
+    .suggestions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .suggestion-chip { background: #eef2ff; color: #1f2937; border-radius: 999px; padding: 8px 14px; font-weight: bold; }
+    .excluded-box { display: flex; gap: 8px; flex-wrap: wrap; min-height: 34px; }
+    .letter-chip { background: #e5e7eb; color: #111827; border-radius: 6px; padding: 7px 10px; font-weight: bold; text-transform: uppercase; min-width: 18px; text-align: center; }
+    .insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+    .insight { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px; }
+    .insight strong { display: block; margin-bottom: 4px; }
 
-    h1, h2, h3 {
-      margin-top: 0;
-    }
-
-    .sub, .muted, .footer-note {
-      color: #555;
-      line-height: 1.55;
-    }
-
-    .muted {
-      font-size: 0.95rem;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      gap: 16px;
-      align-items: start;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.06);
-    }
-
-    .left-panel {
-      position: sticky;
-      top: 16px;
-    }
-
-    .right-panel {
-      position: sticky;
-      top: 16px;
-      max-height: calc(100vh - 40px);
-      display: grid;
-      grid-template-rows: auto auto auto 1fr;
-      gap: 14px;
-      overflow: hidden;
-    }
-
-    .button-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 11px 15px;
-      font-size: 0.95rem;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .primary {
-      background: #4f46e5;
-      color: white;
-    }
-
-    .secondary {
-      background: #e5e7eb;
-      color: #222;
-    }
-
-    .ghost {
-      background: white;
-      color: #222;
-      border: 1px solid #d1d5db;
-    }
-
-    .rows {
-      display: grid;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .tile-row {
-      display: grid;
-      grid-template-columns: repeat(5, 56px);
-      gap: 8px;
-      justify-content: start;
-    }
-
-    .tile {
-      width: 56px;
-      height: 56px;
-      border-radius: 8px;
-      border: 2px solid #ccc;
-      font-size: 1.65rem;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-transform: uppercase;
-      cursor: pointer;
-      user-select: none;
-      background: #e5e7eb;
-      color: #111827;
-      outline: none;
-      box-sizing: border-box;
-    }
-
-    .tile.gray {
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .tile.yellow {
-      background: #facc15;
-      color: #111827;
-      border-color: #eab308;
-    }
-
-    .tile.green {
-      background: #22c55e;
-      color: white;
-      border-color: #16a34a;
-    }
-
-    .suggestions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .suggestion-chip {
-      background: #eef2ff;
-      color: #1f2937;
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-weight: bold;
-    }
-
-    .excluded-box {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      min-height: 34px;
-    }
-
-    .letter-chip {
-      background: #e5e7eb;
-      color: #111827;
-      border-radius: 6px;
-      padding: 7px 10px;
-      font-weight: bold;
-      text-transform: uppercase;
-      min-width: 18px;
-      text-align: center;
-    }
-
-    .insights {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 10px;
-    }
-
-    .insight {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 10px;
-    }
-
-    .insight strong {
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .results-wrap {
-      overflow: auto;
-      border-top: 1px solid #e5e7eb;
-      padding-top: 12px;
-    }
-
-    .results-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
-      gap: 8px;
-      padding-bottom: 8px;
-    }
-
-    .word-chip {
-      background: #f3f4f6;
-      border-radius: 8px;
-      padding: 9px 10px;
-      text-align: center;
-      font-weight: bold;
-      letter-spacing: 1px;
-      text-transform: lowercase;
-    }
+    .results-wrap { overflow: auto; border-top: 1px solid #e5e7eb; padding-top: 12px; }
+    .results-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 8px; padding-bottom: 8px; }
+    .word-chip { background: #f3f4f6; border-radius: 8px; padding: 9px 10px; text-align: center; font-weight: bold; letter-spacing: 1px; text-transform: lowercase; }
 
     @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .left-panel,
-      .right-panel {
-        position: static;
-        max-height: none;
-      }
-
-      .right-panel {
-        overflow: visible;
-      }
-
-      .results-wrap {
-        max-height: 380px;
-      }
-    }
-
-    @media (max-width: 460px) {
-      .tile-row {
-        grid-template-columns: repeat(5, 48px);
-        gap: 7px;
-      }
-
-      .tile {
-        width: 48px;
-        height: 48px;
-        font-size: 1.35rem;
-      }
+      .layout { grid-template-columns: 1fr; }
+      .left-panel, .right-panel { position: static; max-height: none; }
+      .right-panel { overflow: visible; }
+      .results-wrap { max-height: 380px; }
     }
   </style>
 </head>
@@ -288,20 +69,44 @@
     <section class="hero">
       <h1>Wordle Solver</h1>
       <p class="sub">
-        Type each guess into a row. Click tiles to mark gray, yellow, or green.
-        Suggestions update automatically as you work.
+        Enter green letters in their exact positions, yellow letters where they do <strong>not</strong> belong,
+        and gray letters that are not in the answer. Results update automatically.
       </p>
     </section>
 
     <div class="layout">
       <section class="card left-panel">
-        <h2>Wordle Board</h2>
-        <p class="muted">Type letters directly into the tiles. Click each tile to cycle Gray → Yellow → Green.</p>
+        <h2>Wordle Helper</h2>
 
-        <div id="rows" class="rows"></div>
+        <div class="helper-section">
+          <div class="helper-label"><span class="label-dot green-dot"></span> Green Letters - Correct Position</div>
+          <div class="position-row">
+            <div class="position-box"><label>1</label><input class="green green-input" maxlength="1"></div>
+            <div class="position-box"><label>2</label><input class="green green-input" maxlength="1"></div>
+            <div class="position-box"><label>3</label><input class="green green-input" maxlength="1"></div>
+            <div class="position-box"><label>4</label><input class="green green-input" maxlength="1"></div>
+            <div class="position-box"><label>5</label><input class="green green-input" maxlength="1"></div>
+          </div>
+        </div>
+
+        <div class="helper-section">
+          <div class="helper-label"><span class="label-dot yellow-dot"></span> Yellow Letters - In Word, Not Here</div>
+          <p class="muted">Put yellow letters under the position where they appeared. Multiple letters are okay.</p>
+          <div class="position-row">
+            <div class="position-box"><label>Not 1</label><input class="yellow yellow-input"></div>
+            <div class="position-box"><label>Not 2</label><input class="yellow yellow-input"></div>
+            <div class="position-box"><label>Not 3</label><input class="yellow yellow-input"></div>
+            <div class="position-box"><label>Not 4</label><input class="yellow yellow-input"></div>
+            <div class="position-box"><label>Not 5</label><input class="yellow yellow-input"></div>
+          </div>
+        </div>
+
+        <div class="helper-section">
+          <div class="helper-label"><span class="label-dot gray-dot"></span> Gray Letters - Not in Answer</div>
+          <input id="grayInput" class="gray" placeholder="Example: rstlne">
+        </div>
 
         <div class="button-row">
-          <button class="ghost" id="addRowBtn">Add Guess Row</button>
           <button class="primary" id="solveBtn">Update Now</button>
           <button class="secondary" id="resetBtn">Reset</button>
         </div>
@@ -415,121 +220,24 @@
       "sappy","spoon","faint"
     ];
 
-    const rowsContainer = document.getElementById("rows");
     let solveTimer;
 
-    function createTile() {
-      const tile = document.createElement("div");
-      tile.className = "tile gray";
-      tile.setAttribute("data-state", "gray");
-      tile.setAttribute("tabindex", "0");
-
-      tile.addEventListener("click", () => {
-        cycleTileState(tile);
-        scheduleSolve();
-      });
-
-      tile.addEventListener("keydown", e => {
-        handleTileKeydown(e, tile);
-      });
-
-      return tile;
+    function clean(value) {
+      return value.toLowerCase().replace(/[^a-z]/g, "");
     }
 
-    function createRow() {
-      const row = document.createElement("div");
-      row.className = "tile-row";
+    function getRules() {
+      const greenInputs = [...document.querySelectorAll(".green-input")];
+      const yellowInputs = [...document.querySelectorAll(".yellow-input")];
 
-      for (let i = 0; i < 5; i++) row.appendChild(createTile());
+      const correct = greenInputs.map(input => clean(input.value).slice(0, 1));
+      const misplaced = yellowInputs.map(input => clean(input.value));
 
-      rowsContainer.appendChild(row);
-      scheduleSolve();
-    }
-
-    function cycleTileState(tile) {
-      const states = ["gray", "yellow", "green"];
-      const current = tile.getAttribute("data-state");
-      const next = states[(states.indexOf(current) + 1) % 3];
-
-      tile.setAttribute("data-state", next);
-      tile.classList.remove("gray", "yellow", "green");
-      tile.classList.add(next);
-    }
-
-    function handleTileKeydown(e, tile) {
-      const row = tile.parentElement;
-      const tiles = [...row.querySelectorAll(".tile")];
-      const index = tiles.indexOf(tile);
-
-      if (/^[a-zA-Z]$/.test(e.key)) {
-        tile.textContent = e.key.toUpperCase();
-        if (index < 4) tiles[index + 1].focus();
-        scheduleSolve();
-        return;
-      }
-
-      if (e.key === "Backspace") {
-        if (tile.textContent) {
-          tile.textContent = "";
-        } else if (index > 0) {
-          tiles[index - 1].focus();
-          tiles[index - 1].textContent = "";
-        }
-        scheduleSolve();
-        return;
-      }
-
-      if (e.key === "Delete") {
-        tile.textContent = "";
-        scheduleSolve();
-        return;
-      }
-
-      if (e.key === "ArrowRight" && index < 4) {
-        tiles[index + 1].focus();
-        return;
-      }
-
-      if (e.key === "ArrowLeft" && index > 0) {
-        tiles[index - 1].focus();
-        return;
-      }
-
-      if (e.key === " " || e.key === "Enter") {
-        e.preventDefault();
-        cycleTileState(tile);
-        scheduleSolve();
-      }
-    }
-
-    function getInputsFromRows() {
-      const correct = ["", "", "", "", ""];
-      const misplaced = ["", "", "", "", ""];
       let requiredLetters = "";
-      let excludedLetters = "";
+      misplaced.forEach(group => requiredLetters += group);
+      correct.forEach(letter => requiredLetters += letter);
 
-      const rows = [...document.querySelectorAll(".tile-row")];
-
-      rows.forEach(row => {
-        const tiles = [...row.querySelectorAll(".tile")];
-
-        tiles.forEach((tile, i) => {
-          const letter = tile.textContent.toLowerCase().replace(/[^a-z]/g, "");
-          const state = tile.getAttribute("data-state");
-
-          if (!letter) return;
-
-          if (state === "green") {
-            correct[i] = letter;
-            requiredLetters += letter;
-          } else if (state === "yellow") {
-            misplaced[i] += letter;
-            requiredLetters += letter;
-          } else {
-            excludedLetters += letter;
-          }
-        });
-      });
+      const excludedLetters = clean(document.getElementById("grayInput").value);
 
       return { correct, misplaced, requiredLetters, excludedLetters };
     }
@@ -544,6 +252,7 @@
       for (let i = 0; i < 5; i++) {
         for (const letter of misplaced[i]) {
           if (word[i] === letter) return false;
+          if (!word.includes(letter)) return false;
         }
       }
 
@@ -551,20 +260,8 @@
         if (!word.includes(letter)) return false;
       }
 
-      for (let i = 0; i < 5; i++) {
-        for (const letter of misplaced[i]) {
-          if (!word.includes(letter)) return false;
-        }
-      }
-
       for (const letter of excludedLetters) {
-        if (
-          !requiredLetters.includes(letter) &&
-          !misplaced.join("").includes(letter) &&
-          !correct.includes(letter)
-        ) {
-          if (word.includes(letter)) return false;
-        }
+        if (!requiredLetters.includes(letter) && word.includes(letter)) return false;
       }
 
       return true;
@@ -572,18 +269,15 @@
 
     function rankSuggestions(words) {
       const frequency = {};
-
       for (const word of words) {
-        const uniqueLetters = [...new Set(word)];
-        for (const letter of uniqueLetters) {
+        for (const letter of new Set(word)) {
           frequency[letter] = (frequency[letter] || 0) + 1;
         }
       }
 
       return [...words]
         .map(word => {
-          const uniqueLetters = [...new Set(word)];
-          const score = uniqueLetters.reduce((sum, letter) => sum + (frequency[letter] || 0), 0);
+          const score = [...new Set(word)].reduce((sum, letter) => sum + (frequency[letter] || 0), 0);
           return { word, score };
         })
         .sort((a, b) => b.score - a.score)
@@ -609,15 +303,9 @@
       const box = document.getElementById("excludedLettersBox");
       box.innerHTML = "";
 
-      const confirmedExcluded = [...new Set(
-        rules.excludedLetters
-          .split("")
-          .filter(letter =>
-            !rules.requiredLetters.includes(letter) &&
-            !rules.misplaced.join("").includes(letter) &&
-            !rules.correct.includes(letter)
-          )
-      )].sort();
+      const confirmedExcluded = [...new Set(rules.excludedLetters.split(""))]
+        .filter(letter => !rules.requiredLetters.includes(letter))
+        .sort();
 
       if (confirmedExcluded.length === 0) {
         box.innerHTML = '<span class="muted">No gray letters yet.</span>';
@@ -678,7 +366,7 @@
       }
 
       if (words.length === 0) {
-        results.innerHTML = '<div class="muted">No matching words found. Try relaxing one of your guesses.</div>';
+        results.innerHTML = '<div class="muted">No matching words found. Check your letters and try again.</div>';
         return;
       }
 
@@ -691,29 +379,32 @@
     }
 
     function solve() {
-      const rules = getInputsFromRows();
+      const rules = getRules();
       const matches = WORDS.filter(word => wordMatches(word, rules));
       render(matches, rules);
     }
 
     function scheduleSolve() {
       clearTimeout(solveTimer);
-      solveTimer = setTimeout(solve, 180);
+      solveTimer = setTimeout(solve, 150);
     }
 
-    function resetBoard() {
-      rowsContainer.innerHTML = "";
-      createRow();
-      createRow();
+    function resetSolver() {
+      document.querySelectorAll("input").forEach(input => input.value = "");
       solve();
+      document.querySelector(".green-input").focus();
     }
 
-    document.getElementById("addRowBtn").addEventListener("click", createRow);
-    document.getElementById("solveBtn").addEventListener("click", solve);
-    document.getElementById("resetBtn").addEventListener("click", resetBoard);
+    document.querySelectorAll("input").forEach(input => {
+      input.addEventListener("input", () => {
+        input.value = clean(input.value);
+        scheduleSolve();
+      });
+    });
 
-    createRow();
-    createRow();
+    document.getElementById("solveBtn").addEventListener("click", solve);
+    document.getElementById("resetBtn").addEventListener("click", resetSolver);
+
     solve();
   </script>
 </body>
