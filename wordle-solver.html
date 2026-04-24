@@ -6,88 +6,152 @@
 <title>Puzzle Solver Hub - Wordle Solver</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   background: #f5f5f5;
+  color: #222;
+  overflow-x: hidden;
 }
 
 header {
   background: white;
-  padding: 14px;
+  padding: 12px 14px;
   border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+header a {
+  color: #4f46e5;
+  text-decoration: none;
 }
 
 main {
-  max-width: 520px;
-  margin: auto;
-  padding: 12px;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 10px;
 }
 
 .card {
   background: white;
-  padding: 14px;
+  padding: 12px;
   border-radius: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.05);
 }
 
-h2 { margin: 0 0 10px; font-size: 1.2rem; }
-h3 { margin: 12px 0 6px; font-size: 1rem; }
+h2 {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+}
+
+h3 {
+  margin: 10px 0 5px;
+  font-size: 0.95rem;
+}
+
+.small-note {
+  margin: 0 0 6px;
+  font-size: 0.82rem;
+  color: #666;
+}
 
 .position-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
+  gap: 5px;
+  width: 100%;
 }
 
 input {
-  padding: 10px;
-  border-radius: 8px;
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  padding: 4px;
+  border-radius: 7px;
   border: 2px solid #ccc;
   text-align: center;
+  font-size: 1rem;
   font-weight: bold;
+  text-transform: lowercase;
 }
 
-input.green { border-color: #22c55e; background: #ecfdf5; }
-input.yellow { border-color: #facc15; background: #fefce8; }
-input.gray { border-color: #9ca3af; background: #f3f4f6; text-align: left; }
+input.green {
+  border-color: #22c55e;
+  background: #ecfdf5;
+}
+
+input.yellow {
+  border-color: #facc15;
+  background: #fefce8;
+}
+
+input.gray {
+  height: 40px;
+  border-color: #9ca3af;
+  background: #f3f4f6;
+  text-align: left;
+  padding-left: 10px;
+  font-weight: normal;
+}
+
+.button-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
 
 button {
-  margin-top: 10px;
   padding: 10px;
-  width: 100%;
   border: none;
   border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary {
   background: #4f46e5;
   color: white;
+}
+
+.secondary {
+  background: #e5e7eb;
+  color: #222;
 }
 
 .strategy {
   background: #f9fafb;
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 9px;
   border-radius: 10px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
+  margin-bottom: 8px;
+  font-size: 0.88rem;
 }
 
-/* Suggestions */
 .suggestions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
 }
 
 .suggestion-chip {
   background: #eef2ff;
-  padding: 10px;
+  padding: 9px 6px;
   border-radius: 10px;
-  text-align: center;
   font-weight: bold;
+  text-align: center;
   cursor: pointer;
   position: relative;
+  font-size: 0.95rem;
 }
 
 .suggestion-chip.best {
@@ -95,51 +159,77 @@ button {
 }
 
 .suggestion-label {
-  font-size: 10px;
-  opacity: 0.7;
   display: block;
+  font-size: 0.68rem;
+  opacity: 0.75;
+  margin-bottom: 2px;
 }
 
-/* Copy feedback */
 .copy-feedback {
   position: absolute;
-  bottom: -16px;
+  bottom: -14px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 10px;
+  font-size: 0.65rem;
   color: green;
-  opacity: 0;
 }
 
-.suggestion-chip.copied .copy-feedback {
-  opacity: 1;
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-/* Results */
+.results-header h3 {
+  margin: 0;
+}
+
+.results-header span {
+  font-size: 0.85rem;
+  color: #666;
+}
+
 .results {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
   gap: 6px;
-  margin-top: 10px;
-  max-height: 220px;
-  overflow: auto;
+  max-height: 170px;
+  overflow-y: auto;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
 }
 
 .word {
   background: #eee;
-  padding: 8px;
+  padding: 7px 4px;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
 
-/* Desktop upgrade */
-@media (min-width: 800px) {
-  main { max-width: 1000px; }
+@media (min-width: 850px) {
+  main {
+    max-width: 1100px;
+    padding: 18px;
+  }
 
   .layout {
     display: grid;
     grid-template-columns: 420px 1fr;
     gap: 16px;
+    align-items: start;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .results {
+    max-height: 420px;
   }
 }
 </style>
@@ -148,156 +238,313 @@ button {
 <body>
 
 <header>
-<div>Puzzle Solver Hub</div>
-<a href="/">Home</a>
+  <div><strong>Puzzle Solver Hub</strong></div>
+  <a href="/">Home</a>
 </header>
 
 <main>
+  <div class="layout">
 
-<div class="layout">
+    <section class="card">
+      <h2>Wordle Helper</h2>
 
-<div class="card">
-<h2>Wordle Helper</h2>
+      <h3>Green</h3>
+      <p class="small-note">Correct letter, correct spot.</p>
+      <div class="position-row">
+        <input class="g green" maxlength="1">
+        <input class="g green" maxlength="1">
+        <input class="g green" maxlength="1">
+        <input class="g green" maxlength="1">
+        <input class="g green" maxlength="1">
+      </div>
 
-<h3>Green</h3>
-<div class="position-row">
-<input class="g green"><input class="g green"><input class="g green"><input class="g green"><input class="g green">
-</div>
+      <h3>Yellow</h3>
+      <p class="small-note">Letter is in the word, but not in that spot.</p>
+      <div class="position-row">
+        <input class="y yellow">
+        <input class="y yellow">
+        <input class="y yellow">
+        <input class="y yellow">
+        <input class="y yellow">
+      </div>
 
-<h3>Yellow</h3>
-<div class="position-row">
-<input class="y yellow"><input class="y yellow"><input class="y yellow"><input class="y yellow"><input class="y yellow">
-</div>
+      <h3>Gray</h3>
+      <input id="gray" class="gray" placeholder="Letters not in answer">
 
-<h3>Gray</h3>
-<input id="gray" class="gray" placeholder="rstlne">
+      <div class="button-row">
+        <button class="primary" id="updateBtn">Update</button>
+        <button class="secondary" id="resetBtn">Reset</button>
+      </div>
+    </section>
 
-<button onclick="solve()">Update</button>
-</div>
+    <section class="card">
+      <h2>Best Guesses</h2>
+      <div id="strategy" class="strategy">Start entering letters.</div>
+      <div id="suggestions" class="suggestions"></div>
 
-<div class="card">
-<h2>Best Guesses</h2>
-<div id="strategy" class="strategy"></div>
+      <div class="results-header">
+        <h3>Results</h3>
+        <span><span id="count">0</span> matches</span>
+      </div>
 
-<div id="suggestions" class="suggestions"></div>
+      <div id="results" class="results"></div>
+    </section>
 
-<h3>Results (<span id="count">0</span>)</h3>
-<div id="results" class="results"></div>
-</div>
-
-</div>
-
+  </div>
 </main>
 
 <script>
+const WORDS = [
+"cigar","rebut","sissy","humph","awake","blush","focal","evade","naval","serve",
+"heath","dwarf","model","karma","stink","grade","quiet","bench","abate","feign",
+"major","death","fresh","crust","stool","colon","abase","marry","react","batty",
+"pride","floss","helix","croak","staff","paper","unfed","whelp","trawl","outdo",
+"adobe","crazy","sower","repay","digit","crate","cluck","spike","mimic","pound",
+"maxim","linen","unmet","flesh","booby","forth","first","stand","belly","ivory",
+"seedy","print","yearn","drain","bribe","stout","panel","crass","flume","offal",
+"agree","error","swirl","argue","bleed","delta","flick","totem","wooer","front",
+"shrub","parry","biome","lapel","start","greet","goner","golem","lusty","loopy",
+"round","audit","lying","gamma","labor","islet","civic","forge","corny","moult",
+"basic","salad","agate","spicy","spray","essay","fjord","spend","kebab","guild",
+"aback","motor","alone","hatch","hyper","thumb","dowry","ought","belch","dutch",
+"pilot","tweed","comet","jaunt","enema","steed","abyss","growl","fling","dozen",
+"boozy","erode","world","gouge","click","briar","great","altar","pulpy","blurt",
+"coast","duchy","groin","fixer","group","rogue","badly","smart","pithy","gaudy",
+"chill","heron","vodka","finer","surer","radio","rouge","perch","retch","wrote",
+"clock","tilde","store","prove","bring","solve","cheat","grime","exult","usher",
+"epoch","triad","break","rhino","viral","conic","masse","sonic","vital","trace",
+"using","peach","champ","baton","brake","pluck","craze","gripe","weary","picky",
+"acute","ferry","aside","tapir","troll","unify","rebus","boost","truss","siege",
+"tiger","banal","slump","crank","gorge","query","drink","favor","abbey","tangy",
+"panic","solar","shire","proxy","point","robot","prick","wince","crimp","knoll",
+"sugar","whack","mount","perky","could","wrung","light","those","moist","shard",
+"pleat","aloft","skill","elder","frame","humor","pause","ulcer","ultra","robin",
+"cynic","agora","aroma","caulk","shake","pupal","dodge","swill","tacit","other",
+"thorn","trove","bloke","vivid","spill","chant","choke","rupee","nasty","mourn",
+"ahead","brine","cloth","hoard","sweet","month","lapse","watch","today","focus",
+"smelt","tease","cater","movie","lynch","saute","allow","renew","their","slosh",
+"purge","chest","depot","epoxy","nymph","found","shall","harry","stove","lowly",
+"snout","trope","fewer","shawl","natal","fibre","comma","foray","scare","stair",
+"black","squad","royal","chunk","mince","slave","shame","cheek","ample","flair",
+"foyer","cargo","oxide","plant","olive","inert","askew","heist","shown","zesty",
+"hasty","trash","fella","larva","forgo","story","hairy","train","homer","badge",
+"midst","canny","fetus","butch","farce","slung","tipsy","metal","yield","delve",
+"being","scour","glass","gamer","scrap","money","hinge","album","vouch","asset",
+"tiara","crept","bayou","atoll","manor","creak","showy","phase","froth","depth",
+"gloom","flood","trait","girth","piety","goose","float","donor","atone","primo",
+"apron","blown","cacao","loser","input","gloat","awful","brink","smite","beady",
+"rusty","retro","droll","gawky","hutch","pinto","gaily","egret","lilac","sever",
+"field","fluff","hydro","flack","agape","wench","voice","stead","stalk","berth",
+"madam","night","bland","liver","wedge","augur","roomy","wacky","flock","angry",
+"bobby","trite","aphid","tryst","midge","power","elope","cinch","motto","stomp",
+"upset","bluff","cramp","quart","coyly","youth","rhyme","buggy","alien","smear",
+"unfit","patty","cling","glean","label","hunky","khaki","poker","gruel","twice",
+"twang","shrug","treat","waste","merit","woven","needy","clown","widow","irony",
+"ruder","gauze","chief","onset","prize","fungi","charm","gully","inter","whoop",
+"taunt","leery","class","theme","lofty","tibia","booze","alpha","thyme","eclat",
+"doubt","parer","chute","stick","trice","alike","recap","saint","glory","grate",
+"admit","brisk","soggy","usurp","scald","scorn","leave","twine","sting","bough",
+"marsh","sloth","dandy","vigor","howdy","enjoy","valid","ionic","equal","unset",
+"floor","catch","spade","stein","exist","quirk","denim","grove","spiel","mummy",
+"fault","foggy","flout","carry","sneak","libel","waltz","aptly","piney","inept",
+"aloud","photo","dream","stale","vomit","ombre","fanny","unite","snarl","baker",
+"there","glyph","pooch","hippy","spell","folly","louse","gulch","vault","godly",
+"threw","fleet","grave","inane","shock","crave","spite","valve","skimp","claim",
+"rainy","musty","pique","daddy","quasi","arise","aging","valet","opium","avert",
+"stuck","recut","mulch","genre","plume","rifle","count","incur","total","wrest",
+"mocha","deter","study","lover","safer","rivet","funny","smoke","mound","undue",
+"sedan","pagan","swine","guile","gusty","equip","tough","canoe","chaos","covet",
+"human","udder","lunch","blast","stray","manga","melee","lefty","quick","paste",
+"given","octal","risen","groan","leaky","grind","carve","loose","sadly","spilt",
+"apple","slack","honey","final","sheen","eerie","minty","slick","derby","wharf",
+"spelt","coach","erupt","singe","price","spawn","fairy","jiffy","filmy","stack",
+"chose","sleep","ardor","nanny","niece","woozy","handy","grace","ditto","stank",
+"cream","usual","diode","valor","angle","ninja","muddy","chase","reply","prone",
+"spoil","heart","shade","diner","arson","onion","sleet","dowel","couch","palsy",
+"bowel","smile","evoke","creek","lance","eagle","idiot","siren","built","embed",
+"award","dross","annul","goody","frown","patio","laden","humid","elite","lymph",
+"edify","might","reset","visit","gusto","purse","vapor","crock","write","sunny",
+"loath","chaff","slide","queer","venom","stamp","sorry","still","acorn","aping",
+"pushy","tamer","hater","mania","awoke","brawn","swift","exile","birch","lucky",
+"freer","risky","ghost","plier","lunar","winch","snare","nurse","house","borax",
+"nicer","lurch","exalt","about","savvy","toxin","tunic","pried","inlay","chump",
+"lanky","cress","eater","elude","cycle","kitty","boule","moron","tenet","place",
+"lobby","plush","vigil","index","blink","clung","qualm","croup","clink","juicy",
+"stage","decay","nerve","flier","shaft","crook","clean","china","ridge","vowel",
+"gnome","snuck","icing","spiny","rigor","snail","flown","rabid","prose","thank",
+"poppy","budge","fiber","moldy","dowdy","kneel","track","caddy","quell","dumpy",
+"sappy","spoon","faint"
+];
 
-const WORDS = ["cigar","rebut","sissy","humph","awake","blush","focal","evade","naval","serve","heath","dwarf","model","karma","stink","grade","quiet","bench","abate","feign","major","death","fresh","crust","stool","colon","abase","marry","react","batty"];
+let solveTimer;
 
-function clean(v){ return v.toLowerCase().replace(/[^a-z]/g,""); }
-
-function getRules(){
-let g=[...document.querySelectorAll(".g")].map(x=>clean(x.value));
-let y=[...document.querySelectorAll(".y")].map(x=>clean(x.value));
-let gray=clean(document.getElementById("gray").value);
-return {g,y,gray};
+function clean(value) {
+  return value.toLowerCase().replace(/[^a-z]/g, "");
 }
 
-function match(w,r){
-for(let i=0;i<5;i++){ if(r.g[i] && w[i]!=r.g[i]) return false; }
+function getRules() {
+  const greenInputs = [...document.querySelectorAll(".g")];
+  const yellowInputs = [...document.querySelectorAll(".y")];
 
-for(let i=0;i<5;i++){
-for(let l of r.y[i]){
-if(w[i]==l) return false;
-if(!w.includes(l)) return false;
-}
-}
+  const correct = greenInputs.map(input => clean(input.value).slice(0, 1));
+  const misplaced = yellowInputs.map(input => clean(input.value));
 
-for(let l of r.gray){
-if(!r.y.join("").includes(l) && !r.g.includes(l)){
-if(w.includes(l)) return false;
-}
-}
-return true;
+  let requiredLetters = "";
+  misplaced.forEach(group => requiredLetters += group);
+  correct.forEach(letter => requiredLetters += letter);
+
+  const excludedLetters = clean(document.getElementById("gray").value);
+
+  return { correct, misplaced, requiredLetters, excludedLetters };
 }
 
-function rank(words){
-let f={};
-words.forEach(w=>{
-[...new Set(w)].forEach(l=>f[l]=(f[l]||0)+1);
+function wordMatches(word, rules) {
+  const { correct, misplaced, requiredLetters, excludedLetters } = rules;
+
+  for (let i = 0; i < 5; i++) {
+    if (correct[i] && word[i] !== correct[i]) return false;
+  }
+
+  for (let i = 0; i < 5; i++) {
+    for (const letter of misplaced[i]) {
+      if (word[i] === letter) return false;
+      if (!word.includes(letter)) return false;
+    }
+  }
+
+  for (const letter of requiredLetters) {
+    if (!word.includes(letter)) return false;
+  }
+
+  for (const letter of excludedLetters) {
+    if (!requiredLetters.includes(letter) && word.includes(letter)) return false;
+  }
+
+  return true;
+}
+
+function rankSuggestions(words) {
+  const frequency = {};
+
+  for (const word of words) {
+    for (const letter of new Set(word)) {
+      frequency[letter] = (frequency[letter] || 0) + 1;
+    }
+  }
+
+  return [...words]
+    .map(word => {
+      const score = [...new Set(word)].reduce((sum, letter) => sum + (frequency[letter] || 0), 0);
+      return { word, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4)
+    .map(item => item.word);
+}
+
+function getStrategy(count) {
+  if (count === 0) return "No matches. Check for conflicting clues.";
+  if (count > 40) return "Explore: try common unused letters.";
+  if (count > 15) return "Narrowing: test likely letters and positions.";
+  if (count > 5) return "Close: focus on likely solutions.";
+  return "Very close: one of these may be the answer.";
+}
+
+function copyWord(word, element) {
+  navigator.clipboard.writeText(word);
+
+  const old = element.querySelector(".copy-feedback");
+  if (old) old.remove();
+
+  const feedback = document.createElement("div");
+  feedback.className = "copy-feedback";
+  feedback.textContent = "Copied";
+  element.appendChild(feedback);
+
+  setTimeout(() => feedback.remove(), 750);
+}
+
+function render(words) {
+  document.getElementById("count").textContent = words.length;
+  document.getElementById("strategy").textContent = getStrategy(words.length);
+
+  const suggestions = document.getElementById("suggestions");
+  suggestions.innerHTML = "";
+
+  const top = rankSuggestions(words);
+
+  if (top.length === 0) {
+    suggestions.innerHTML = '<div class="small-note">No suggestions yet.</div>';
+  } else {
+    top.forEach((word, index) => {
+      const chip = document.createElement("div");
+      chip.className = index === 0 ? "suggestion-chip best" : "suggestion-chip";
+
+      const label = document.createElement("span");
+      label.className = "suggestion-label";
+      label.textContent = index === 0 ? "Best" : words.length <= 10 ? "Likely" : "Strong";
+
+      chip.appendChild(label);
+      chip.append(word);
+      chip.addEventListener("click", () => copyWord(word, chip));
+
+      suggestions.appendChild(chip);
+    });
+  }
+
+  const results = document.getElementById("results");
+  results.innerHTML = "";
+
+  if (words.length === 0) {
+    results.innerHTML = '<div class="small-note">No matching words found.</div>';
+    return;
+  }
+
+  words.slice(0, 80).forEach(word => {
+    const div = document.createElement("div");
+    div.className = "word";
+    div.textContent = word;
+    results.appendChild(div);
+  });
+}
+
+function solve() {
+  const rules = getRules();
+  const matches = WORDS.filter(word => wordMatches(word, rules));
+  render(matches);
+}
+
+function scheduleSolve() {
+  clearTimeout(solveTimer);
+  solveTimer = setTimeout(solve, 120);
+}
+
+function resetSolver() {
+  document.querySelectorAll("input").forEach(input => input.value = "");
+  solve();
+  document.querySelector(".g").focus();
+}
+
+document.querySelectorAll("input").forEach(input => {
+  input.addEventListener("input", () => {
+    input.value = clean(input.value);
+
+    if (input.classList.contains("g") && input.value.length === 1) {
+      const greenInputs = [...document.querySelectorAll(".g")];
+      const index = greenInputs.indexOf(input);
+      if (index >= 0 && index < greenInputs.length - 1) {
+        greenInputs[index + 1].focus();
+      }
+    }
+
+    scheduleSolve();
+  });
 });
 
-return words.map(w=>{
-let score=[...new Set(w)].reduce((s,l)=>s+(f[l]||0),0);
-return {w,score};
-}).sort((a,b)=>b.score-a.score);
-}
+document.getElementById("updateBtn").addEventListener("click", solve);
+document.getElementById("resetBtn").addEventListener("click", resetSolver);
 
-function strategy(n){
-if(n>20) return "Explore new letters";
-if(n>10) return "Narrow down";
-if(n>5) return "Close in";
-return "Very close";
-}
-
-function copyWord(word, el){
-navigator.clipboard.writeText(word);
-el.classList.add("copied");
-
-let fb=document.createElement("div");
-fb.className="copy-feedback";
-fb.innerText="Copied";
-el.appendChild(fb);
-
-setTimeout(()=>{ el.classList.remove("copied"); fb.remove(); },800);
-}
-
-function solve(){
-
-let r=getRules();
-let matches=WORDS.filter(w=>match(w,r));
-let ranked=rank(matches);
-
-document.getElementById("count").innerText=matches.length;
-document.getElementById("strategy").innerText=strategy(matches.length);
-
-let s=document.getElementById("suggestions");
-s.innerHTML="";
-
-ranked.slice(0,4).forEach((obj,i)=>{
-let d=document.createElement("div");
-d.className="suggestion-chip"+(i==0?" best":"");
-
-let label=document.createElement("span");
-label.className="suggestion-label";
-label.innerText=i==0?"Best":"Guess";
-
-d.appendChild(label);
-d.append(obj.w);
-
-d.onclick=()=>copyWord(obj.w,d);
-
-s.appendChild(d);
-});
-
-let res=document.getElementById("results");
-res.innerHTML="";
-matches.slice(0,60).forEach(w=>{
-let d=document.createElement("div");
-d.className="word";
-d.innerText=w;
-res.appendChild(d);
-});
-}
-
-document.querySelectorAll("input").forEach(i=>{
-i.addEventListener("input",()=>{
-i.value=clean(i.value);
 solve();
-});
-});
-
-solve();
-
 </script>
 
 </body>
